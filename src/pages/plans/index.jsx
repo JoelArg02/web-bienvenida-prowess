@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Collapse, Container, Row, Table } from "react-bootstrap";
-import PlanFeatures from "./PlanFeatures";
+import PlanFeatures from "./planFeatures";
 import {
   fetchPlans,
   handleAddPlan,

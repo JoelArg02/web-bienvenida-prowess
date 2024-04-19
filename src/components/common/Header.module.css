@@ -1,0 +1,61 @@
+.headerCollapsed,
+.headerExpanded {
+  transition: width 0.3s;
+  overflow: hidden;
+}
+
+.headerCollapsed {
+  width: 75px;
+}
+
+.headerExpanded {
+  width: 250px;
+}
+
+.logoContainer {
+  margin-bottom: 20px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.icon,
+.iconCollapsed {
+  width: 25px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.toggleButton {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+.logoImageExpanded {
+  width: 100px;
+  height: 100px;
+}
+
+.logoImageCollapsed {
+  width: 60px;
+  height: 60px;
+}
+
+.toggleButton {
+  padding: 12px 20px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  margin: 12px;
+
+  border: 1px solid #000;
+
+  background-color: #fff;
+
+  color: #000;
+  z-index: 10;
+  position: relative;
+}

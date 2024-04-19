@@ -1,0 +1,26 @@
+/* styles/globals.css */
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+#__next {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.content-wrap {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+

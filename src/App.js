@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import { AuthProvider } from './hooks/useAuth';
 import Navigation from './components/navigation/Navigation';
 import AppRoutes from './routes/AppRoutes';
+import Footer from './components/footer/Footer.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
         <Container>
           <AppRoutes />
         </Container>
+        <Footer />
       </Router>
     </AuthProvider>
   );

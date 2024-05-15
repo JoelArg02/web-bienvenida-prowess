@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { db } from "../../config/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { Container } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Accordion, Container } from "react-bootstrap";
+import { db } from "../../config/firebaseConfig";
+import AlertMessage from "../AlertsMessage/AlertMessage";
 import CredentialForm from "./CredentialForm";
+import CredentialsList from "./CredentialsList";
 import EnvVariableForm from "./EnvVariableForm";
 import ProjectForm from "./ProjectForm";
-import CredentialsList from "./CredentialsList";
-import AlertMessage from "../AlertsMessage/AlertMessage";
 
 const Credentials = () => {
   const [credentials, setCredentials] = useState([]);
@@ -56,26 +56,42 @@ const Credentials = () => {
         messageType={messageType}
         setMessage={setMessage}
       />
-      <CredentialForm
-        fetchCredentials={fetchCredentials}
-        setMessage={setMessage}
-        setMessageType={setMessageType}
-      />
-      <h2>Lista de Credenciales</h2>
-      <CredentialsList credentials={credentials} />
-      <h2>Gestión de Variables de Entorno</h2>
-      <EnvVariableForm
-        projects={projects}
-        fetchEnvVariables={fetchEnvVariables}
-        setMessage={setMessage}
-        setMessageType={setMessageType}
-      />
-      <h2>Proyectos</h2>
-      <ProjectForm
-        fetchProjects={fetchProjects}
-        setMessage={setMessage}
-        setMessageType={setMessageType}
-      />
+      <Accordion defaultActiveKey="0">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Gestión de Credenciales</Accordion.Header>
+          <Accordion.Body>
+            <CredentialForm
+              fetchCredentials={fetchCredentials}
+              setMessage={setMessage}
+              setMessageType={setMessageType}
+            />
+            
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Gestión de Variables de Entorno</Accordion.Header>
+          <Accordion.Body>
+            <EnvVariableForm
+              projects={projects}
+              fetchEnvVariables={fetchEnvVariables}
+              setMessage={setMessage}
+              setMessageType={setMessageType}
+            />
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Proyectos</Accordion.Header>
+          <Accordion.Body>
+            <ProjectForm
+              fetchProjects={fetchProjects}
+              setMessage={setMessage}
+              setMessageType={setMessageType}
+            />
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </Container>
   );
 };

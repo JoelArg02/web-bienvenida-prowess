@@ -6,6 +6,7 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import HomePage from '../pages/Home';
 import CredentialsListPage from '../pages/CredentialsListPage';
+import AccountPage from '../pages/AccountsPage'
 
 const AppRoutes = () => {
   return (
@@ -19,6 +20,9 @@ const AppRoutes = () => {
       <Route path="/credentials" element={<PrivateRoute />}>
         <Route path="" element={<CredentialsPage />} />
         <Route path="list" element={<CredentialsListPage />} />
+      </Route>
+      <Route path="/users" element={<PrivateRoute />}>
+        <Route path="" element={<AccountPage />} />
       </Route>
     </Routes>
   );

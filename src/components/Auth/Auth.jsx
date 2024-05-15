@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -16,8 +16,14 @@ const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-  const { setUser, setUserDetails } = useAuth();
+  const { setUser, setUserDetails, user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleAuth = async () => {
     try {
@@ -43,10 +49,11 @@ const Auth = () => {
       }
 
       const token = await userCredential.user.getIdToken();
+      localStorage.setItem("token", token);
       const decodedToken = jwtDecode(token);
       setUser(userCredential.user);
       setUserDetails(decodedToken);
-      navigate("/credentials");
+      navigate("/");
     } catch (error) {
       setMessageType("danger");
       setMessage(error.message);

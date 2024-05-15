@@ -13,12 +13,14 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         const token = await currentUser.getIdToken();
+        localStorage.setItem('token', token); 
         const decodedToken = jwtDecode(token);
         setUser(currentUser);
         setUserDetails(decodedToken);
       } else {
         setUser(null);
         setUserDetails(null);
+        localStorage.removeItem('token');
       }
     });
 
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     signOut(auth);
+    localStorage.removeItem('token'); // Eliminar token de localStorage
   };
 
   return (

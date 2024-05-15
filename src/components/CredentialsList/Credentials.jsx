@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { Container } from "react-bootstrap";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { Container, Accordion } from "react-bootstrap";
 import ProjectsList from "./ProjectsList";
 import AlertMessage from "../AlertsMessage/AlertMessage";
 
@@ -24,7 +30,9 @@ const Credentials = () => {
   const fetchEnvVariables = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "envVariables"));
-      setEnvVariables(querySnapshot.docs.map((doc) => doc.data()));
+      setEnvVariables(
+        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      );
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +53,7 @@ const Credentials = () => {
     fetchProjects();
   }, []);
 
-  const handleDownloadEnvFile = (projectName) => {
+  const handleDownloadEnvFile = (projectName, fileName) => {
     const projectEnvVars = envVariables.filter(
       (envVar) => envVar.project === projectName
     );
@@ -55,10 +63,11 @@ const Credentials = () => {
     const blob = new Blob([envFileContent], { type: "text/plain" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${projectName}.env`;
+    link.download = fileName;
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document.body.removeChild(link); // Eliminar el enlace después de hacer clic
+    URL.revokeObjectURL(link.href); // Revocar el objeto URL para liberar memoria
   };
 
   const handleCopyEnvVariables = (projectName) => {
@@ -81,16 +90,51 @@ const Credentials = () => {
       });
   };
 
+  const handleEditEnvVariable = async (id, newKey, newValue) => {
+    try {
+      const envVarRef = doc(db, "envVariables", id);
+      await updateDoc(envVarRef, { key: newKey, value: newValue });
+      setMessageType("success");
+      setMessage("Variable de entorno actualizada exitosamente.");
+      fetchEnvVariables(); // Refrescar la lista de variables
+    } catch (error) {
+      console.error(error);
+      setMessageType("danger");
+      setMessage("Error al actualizar la variable de entorno.");
+    }
+  };
+
+  const handleDeleteEnvVariable = async (id) => {
+    try {
+      await deleteDoc(doc(db, "envVariables", id));
+      setMessageType("success");
+      setMessage("Variable de entorno eliminada exitosamente.");
+      fetchEnvVariables(); // Refrescar la lista de variables
+    } catch (error) {
+      console.error(error);
+      setMessageType("danger");
+      setMessage("Error al eliminar la variable de entorno.");
+    }
+  };
+
   return (
     <Container style={{ marginTop: "50px", maxWidth: "800px" }}>
       <h1>Gestión de Credenciales</h1>
-
-      <ProjectsList
-        projects={projects}
-        envVariables={envVariables}
-        handleDownloadEnvFile={handleDownloadEnvFile}
-        handleCopyEnvVariables={handleCopyEnvVariables}
+      <AlertMessage
+        message={message}
+        messageType={messageType}
+        setMessage={setMessage}
       />
+      <Accordion>
+        <ProjectsList
+          projects={projects}
+          envVariables={envVariables}
+          handleDownloadEnvFile={handleDownloadEnvFile}
+          handleCopyEnvVariables={handleCopyEnvVariables}
+          handleEditEnvVariable={handleEditEnvVariable}
+          handleDeleteEnvVariable={handleDeleteEnvVariable}
+        />
+      </Accordion>
     </Container>
   );
 };

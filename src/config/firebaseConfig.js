@@ -14,18 +14,10 @@ const firebaseConfig = {
   measurementId: "G-ZK0S79TG2X"
 };
 
-
-
-console.log('API Key:', process.env.REACT_APP_API_KEY);
-console.log('Auth Domain:', process.env.REACT_APP_AUTH_DOMAIN);
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
-// Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
 export { auth, db };
